@@ -43,6 +43,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_750ED3287D4F4F26953E83A827130B7D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C6CFFC6C5F424CB4BE7DC84A3A454D0D }}
 
+
+      - name: Publish artifacts
+        run: dotnet publish -c Release -o ./publish
+
           
       - name: Zip and deploy to Function App
         run: |
@@ -62,3 +66,4 @@ jobs:
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
           
+
