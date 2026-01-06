@@ -54,8 +54,8 @@ jobs:
           zip -r ../app.zip .
           cd ..
           az functionapp deployment source config-zip \
-            --name $FUNCTIONAPP_NAME \
-            --resource-group $AZURE_RESOURCE_GROUP \
+            --name 'nsehbfunctionapp3' \
+            --resource-group 'nsehbrg3' \
             --src app.zip
 
       - name: 'Run Azure Functions Action'
@@ -66,4 +66,5 @@ jobs:
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
           
+
 
