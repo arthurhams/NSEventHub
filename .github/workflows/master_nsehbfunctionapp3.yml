@@ -43,6 +43,17 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_750ED3287D4F4F26953E83A827130B7D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C6CFFC6C5F424CB4BE7DC84A3A454D0D }}
 
+          
+      - name: Zip and deploy to Function App
+        run: |
+          cd publish
+          zip -r ../app.zip .
+          cd ..
+          az functionapp deployment source config-zip \
+            --name $FUNCTIONAPP_NAME \
+            --resource-group $AZURE_RESOURCE_GROUP \
+            --src app.zip
+
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
