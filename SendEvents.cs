@@ -1,3 +1,5 @@
+using System.Text;
+using Azure.Identity;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
 using Microsoft.AspNetCore.Http;
@@ -33,23 +35,23 @@ public class SendEvents
             }
 
             // Create a producer client to send events to EventHub
-            await using var producerClient = new EventHubProducerClient(connectionString, eventHubName);
+            await using var producerClient = new EventHubProducerClient(connectionString, eventHubName, new DefaultAzureCredential());
 
             // Read message from request body or use default
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var message = string.IsNullOrEmpty(requestBody) ? "Hello EventHub!" : requestBody;
 
-            // Create a batch of events
+          // Create a batch of events
             using EventDataBatch eventBatch = await producerClient.CreateBatchAsync();
 
-            // Add the message to the batch
-            if (!eventBatch.TryAdd(new EventData(message)))
+            for (int i = 1; i <= 5; i++)
             {
-                throw new Exception($"Event is too large for the batch");
+                eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes($"Event {i}")));
             }
 
-            // Send the batch of events to EventHub
+            // Send the batch of events
             await producerClient.SendAsync(eventBatch);
+ 
 
             _logger.LogInformation($"Successfully sent message to EventHub: {message}");
             
