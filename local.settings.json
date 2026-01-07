@@ -1,11 +1,6 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "FUNCTIONS_WORKER_RUNTIME": "DotnetIsolated"
-
-  },
-  "Host": {
-    "CORS": "https://localhost:44343",
-    "CORSCredentials": true
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
   }
 }
